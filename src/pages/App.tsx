@@ -1,11 +1,12 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Input from "./Input";
 import Note from "./Note";
-import BottomNavigation from "../organisms/BottomNavigationBar";
 import Calendar from "./Calendar";
 import Graph from "./Graph";
 import Settings from "./Settings";
 import NotFound from "./NotFound";
+import ResponsiveDrawer from "../organisms/ResponsiveDrawer";
+import BottomNavigation from "../organisms/BottomNavigationBar";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ResponsiveDrawer />
         <BottomNavigation />
       </BrowserRouter>
     </div>
