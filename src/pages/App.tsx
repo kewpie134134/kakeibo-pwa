@@ -1,19 +1,25 @@
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
-import Home from "./Home";
-import Page from "./Page";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Input from "./Input";
+import Note from "./Note";
 import BottomNavigation from "../organisms/BottomNavigationBar";
+import Calendar from "./Calendar";
+import Graph from "./Graph";
+import Settings from "./Settings";
+import NotFound from "./NotFound";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="page" element={<Page />} />
+          <Route path="/" element={<Input />} />
+          <Route path="/input" element={<Input />} />
+          <Route path="/note" element={<Note />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/graph" element={<Graph />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-
-        <Link to="/">Home</Link>
-        <Link to="/page">Page</Link>
         <BottomNavigation />
       </BrowserRouter>
     </div>
