@@ -7,7 +7,7 @@ import Graph from "./Graph";
 import Settings from "./Settings";
 import NotFound from "./NotFound";
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
       <BrowserRouter>
@@ -24,6 +24,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
