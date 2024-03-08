@@ -12,16 +12,17 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Input />} />
-          <Route path="/input" element={<Input />} />
-          <Route path="/note" element={<Note />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/graph" element={<Graph />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <ResponsiveDrawer />
+        <ResponsiveDrawer>
+          <Routes>
+            <Route path="/" element={<Input />} />
+            <Route path="/input" element={<Input />} />
+            <Route path="/note" element={<Note />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/graph" element={<Graph />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ResponsiveDrawer>
         <BottomNavigation />
       </BrowserRouter>
     </div>

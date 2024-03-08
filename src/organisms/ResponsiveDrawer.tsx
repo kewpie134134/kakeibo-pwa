@@ -4,17 +4,58 @@ import {
   CssBaseline,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+
+import { createTheme, styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import ResponsiveDrawerList from "../molecules/ResponsiveDrawerListItem";
 
 const drawerWidth = 200;
+const headerNavigationHeight = 56;
+const bottomNavigationHeight = 56;
+const theme = createTheme();
+
+const styles = {
+  root: {
+    flexGrow: 1,
+    zIndex: 1,
+    overflow: "hidden",
+    // position: "relative", // ボトムナビゲーションの上に被せない
+    display: "flex",
+    width: "100%",
+  },
+  appBar: {
+    position: "fixed",
+    marginLeft: drawerWidth,
+    [theme.breakpoints.up("md")]: {
+      width: `calc(100% - ${drawerWidth})`,
+    },
+    zIndex: () => theme.zIndex.drawer + 1,
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth,
+    height: "100vh",
+    [theme.breakpoints.up("md")]: {
+      position: "relative",
+    },
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
+    paddingTop: `calc(10px + ${headerNavigationHeight}px)`,
+    paddingBottom: `calc(10px + ${bottomNavigationHeight}px)`,
+    paddingLeft: 0,
+    paddingRight: 0,
+    [theme.breakpoints.up("md")]: {
+      paddingBottom: 10,
+    },
+  },
+};
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -35,31 +76,35 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 }));
 
-const ResponsiveDrawer = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const openToggle = () => {
-    setIsOpen(!isOpen);
+const ResponsiveDrawer = ({ children }: any) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const openCloseDrawerNav = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const closeDrawerNav = () => {
+    setIsDrawerOpen(false);
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={styles.root}>
       <CssBaseline />
       {/* AppBar */}
-      <Box sx={{ display: "flex" }}>
-        <AppBar
-          position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        >
-          <Toolbar>
-            <IconButton onClick={openToggle} color="inherit" sx={{ mr: 2 }}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              タイトル
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <AppBar sx={styles.appBar}>
+        <Toolbar variant="dense">
+          <IconButton
+            onClick={openCloseDrawerNav}
+            color="inherit"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            タイトル
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
       {/* Drawer */}
       <Drawer
@@ -70,25 +115,17 @@ const ResponsiveDrawer = () => {
         }}
         variant="persistent"
         anchor="left"
-        open={isOpen}
+        open={isDrawerOpen}
       >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            <ListItem>
-              <ListItemText primary="メニュー1" />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="メニュー1" />
-            </ListItem>
-          </List>
-        </Box>
+        <Toolbar variant="dense" sx={{ minHeight: 46 }} />
+        {/* ここから */}
+        <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
       </Drawer>
 
       {/* Main */}
-      <Main open={isOpen}>
-        <Toolbar />
-        <Box>メイン</Box>
+      <Main open={isDrawerOpen}>
+        <Toolbar variant="dense" sx={{ minHeight: 40 }} />
+        <Box>{children}</Box>
       </Main>
     </Box>
   );
