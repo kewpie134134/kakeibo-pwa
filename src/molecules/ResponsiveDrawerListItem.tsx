@@ -1,5 +1,4 @@
 import { Box, List } from "@mui/material";
-
 import CreateIcon from "@mui/icons-material/Create";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -33,6 +32,7 @@ const ResponsiveDrawerList = ({ closeDrawerNav }: ResponsiveDrawerList) => {
           }}
           icon={<CreateIcon />}
           text="入力"
+          sortOrder={0}
         />
         <ResponsiveDrawerListItem
           to="/note"
@@ -42,6 +42,7 @@ const ResponsiveDrawerList = ({ closeDrawerNav }: ResponsiveDrawerList) => {
           }}
           icon={<ImportContactsIcon />}
           text="ノート"
+          sortOrder={1}
         />
         <ResponsiveDrawerListItem
           to="/calendar"
@@ -51,6 +52,7 @@ const ResponsiveDrawerList = ({ closeDrawerNav }: ResponsiveDrawerList) => {
           }}
           icon={<CalendarMonthIcon />}
           text="カレンダー"
+          sortOrder={2}
         />
         <ResponsiveDrawerListItem
           to="/graph"
@@ -60,6 +62,7 @@ const ResponsiveDrawerList = ({ closeDrawerNav }: ResponsiveDrawerList) => {
           }}
           icon={<DonutSmallIcon />}
           text="グラフ"
+          sortOrder={3}
         />
         <ResponsiveDrawerListItem
           to="/settings"
@@ -69,6 +72,7 @@ const ResponsiveDrawerList = ({ closeDrawerNav }: ResponsiveDrawerList) => {
           }}
           icon={<SettingsIcon />}
           text="設定"
+          sortOrder={4}
         />
       </List>
     </Box>

@@ -120,7 +120,6 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
         open={isDrawerOpen}
       >
         <Toolbar variant="dense" sx={{ minHeight: 46 }} />
-        {/* ここから */}
         <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
       </Drawer>
 
