@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type countState = {
   pageNumber: number;
@@ -20,6 +20,9 @@ export const usePageNumberStore = create(
       setGraphPage: () => set(() => ({ pageNumber: 3 })),
       setSettingsPage: () => set(() => ({ pageNumber: 4 })),
     }),
-    { name: "page-number-state" }
+    {
+      name: "page-number-state",
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
 );
