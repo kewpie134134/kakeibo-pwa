@@ -10,7 +10,7 @@ import {
 
 import { createTheme, styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import ResponsiveDrawerList from "../molecules/ResponsiveDrawerListItem";
 
 const drawerWidth = 200;
@@ -30,7 +30,7 @@ const styles = {
   appBar: {
     position: "fixed",
     marginLeft: drawerWidth,
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth})`,
     },
     zIndex: () => theme.zIndex.drawer + 1,
@@ -39,7 +39,7 @@ const styles = {
   drawerPaper: {
     width: drawerWidth,
     height: "100vh",
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       position: "relative",
     },
   },
@@ -51,7 +51,7 @@ const styles = {
     paddingBottom: `calc(10px + ${bottomNavigationHeight}px)`,
     paddingLeft: 0,
     paddingRight: 0,
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       paddingBottom: 10,
     },
   },
@@ -76,7 +76,11 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 }));
 
-const ResponsiveDrawer = ({ children }: any) => {
+type ResponsiveDrawerProps = {
+  children: ReactNode;
+};
+
+const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const openCloseDrawerNav = () => {

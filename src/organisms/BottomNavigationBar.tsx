@@ -25,9 +25,9 @@ const styles = {
     textAlign: "center",
   },
   navAreaStyle: {
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       // xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536
-      // 画面幅が md 以上であれば表示させない
+      // 画面幅が sm 以上であれば表示させない
       display: "none",
     },
   },

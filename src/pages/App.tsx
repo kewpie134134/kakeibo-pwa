@@ -6,7 +6,7 @@ import Graph from "./Graph";
 import Settings from "./Settings";
 import NotFound from "./NotFound";
 import ResponsiveDrawer from "../organisms/ResponsiveDrawer";
-import BottomNavigation from "../organisms/BottomNavigationBar";
+import BottomNavigationBar from "../organisms/BottomNavigationBar";
 
 const App: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ const App: React.FC = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ResponsiveDrawer>
-        <BottomNavigation />
+        <BottomNavigationBar />
       </BrowserRouter>
     </div>
   );
