@@ -7,7 +7,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
 import { createTheme, styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ReactNode, useState } from "react";
@@ -86,7 +85,6 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   const openCloseDrawerNav = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
   const closeDrawerNav = () => {
     setIsDrawerOpen(false);
   };
