@@ -24,6 +24,7 @@ const styles = {
     bottom: 0,
     zIndex: 1000,
     textAlign: "center",
+    paddingBottom: 2,
   },
   navAreaStyle: {
     [theme.breakpoints.up("sm")]: {
@@ -52,7 +53,7 @@ const BottomNavigationBar: React.FC = () => {
       <BottomNavigation sx={styles.navAreaStyle} showLabels value={pageNumber}>
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          label="入力"
+          // label="入力"
           icon={<CreateIcon />}
           component={Link}
           to="/input"
@@ -60,7 +61,7 @@ const BottomNavigationBar: React.FC = () => {
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          label="ノート"
+          // label="ノート"
           icon={<ImportContactsIcon />}
           component={Link}
           to="/note"
@@ -68,7 +69,7 @@ const BottomNavigationBar: React.FC = () => {
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          label="カレンダー"
+          // label="カレンダー"
           icon={<CalendarMonthIcon />}
           component={Link}
           to="/calendar"
@@ -76,7 +77,7 @@ const BottomNavigationBar: React.FC = () => {
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          label="グラフ"
+          // label="グラフ"
           icon={<DonutSmallIcon />}
           component={Link}
           to="/graph"
@@ -84,7 +85,7 @@ const BottomNavigationBar: React.FC = () => {
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          label="設定"
+          // label="設定"
           icon={<SettingsIcon />}
           component={Link}
           to="/settings"
