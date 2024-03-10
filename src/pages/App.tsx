@@ -7,6 +7,7 @@ import Settings from "./Settings";
 import NotFound from "./NotFound";
 import ResponsiveDrawer from "../organisms/ResponsiveDrawer";
 import BottomNavigationBar from "../organisms/BottomNavigationBar";
+import Authentication from "../organisms/Authentication";
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
         </ResponsiveDrawer>
         <BottomNavigationBar />
       </BrowserRouter>
+      <Authentication />
     </div>
   );
 };
