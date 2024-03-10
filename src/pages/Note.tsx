@@ -1,5 +1,5 @@
 function Note() {
-  return <>Note</>;
+  return <>ノートページ</>;
 }
 
 export default Note;

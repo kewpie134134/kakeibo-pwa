@@ -1,5 +1,5 @@
 function Calendar() {
-  return <>Calendar</>;
+  return <>カレンダーページ</>;
 }
 
 export default Calendar;

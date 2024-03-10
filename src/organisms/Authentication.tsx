@@ -54,7 +54,7 @@ const Authentication = () => {
       ) : (
         <>
           <p>ログインしていません</p>
-          <button onClick={handleSignIn}>ログイン</button>
+          <button onClick={handleSignIn}>ログイン(Google 認証)</button>
         </>
       )}
     </>

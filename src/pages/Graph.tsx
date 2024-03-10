@@ -1,5 +1,5 @@
 function Graph() {
-  return <>Graph</>;
+  return <>グラフページ</>;
 }
 
 export default Graph;

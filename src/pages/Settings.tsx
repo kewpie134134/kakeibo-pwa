@@ -1,5 +1,5 @@
 function Settings() {
-  return <>Settings</>;
+  return <>設定ページ</>;
 }
 
 export default Settings;
