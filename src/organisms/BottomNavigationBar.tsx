@@ -40,14 +40,7 @@ const styles = {
 
 const BottomNavigationBar: React.FC = () => {
   // zustand で状態を管理
-  const {
-    pageNumber,
-    setInputPage,
-    setNotePage,
-    setCalendarPage,
-    setGraphPage,
-    setSettingsPage,
-  } = usePageNumberStore();
+  const { pageNumber } = usePageNumberStore();
   return (
     <Box sx={styles.wrapper}>
       <BottomNavigation sx={styles.navAreaStyle} showLabels value={pageNumber}>
@@ -57,7 +50,6 @@ const BottomNavigationBar: React.FC = () => {
           icon={<CreateIcon />}
           component={Link}
           to="/input"
-          onClick={setInputPage}
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
@@ -65,7 +57,6 @@ const BottomNavigationBar: React.FC = () => {
           icon={<ImportContactsIcon />}
           component={Link}
           to="/note"
-          onClick={setNotePage}
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
@@ -73,7 +64,6 @@ const BottomNavigationBar: React.FC = () => {
           icon={<CalendarMonthIcon />}
           component={Link}
           to="/calendar"
-          onClick={setCalendarPage}
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
@@ -81,7 +71,6 @@ const BottomNavigationBar: React.FC = () => {
           icon={<DonutSmallIcon />}
           component={Link}
           to="/graph"
-          onClick={setGraphPage}
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
@@ -89,7 +78,6 @@ const BottomNavigationBar: React.FC = () => {
           icon={<SettingsIcon />}
           component={Link}
           to="/settings"
-          onClick={setSettingsPage}
         />
       </BottomNavigation>
     </Box>
