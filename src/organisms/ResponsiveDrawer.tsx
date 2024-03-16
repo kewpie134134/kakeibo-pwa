@@ -9,8 +9,12 @@ import {
 } from "@mui/material";
 import { createTheme, styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ResponsiveDrawerList from "../molecules/ResponsiveDrawerListItem";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../libs/firebaseConfig";
+import { useAuthUser } from "../stores/authUser";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 200;
 const headerNavigationHeight = 56;
@@ -82,11 +86,30 @@ type ResponsiveDrawerProps = {
 const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  // zustand 状態を管理
+  const { user, setUser } = useAuthUser();
+
+  // ログアウト時の Navigate を設定
+  const navigate = useNavigate();
+
   const openCloseDrawerNav = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
   const closeDrawerNav = () => {
     setIsDrawerOpen(false);
+  };
+
+  // ログインしているかどうかを判定する
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, [setUser]);
+
+  // ログアウト時の処理
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login/");
   };
 
   return (
@@ -127,6 +150,8 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
       <Main open={isDrawerOpen}>
         <Toolbar variant="dense" sx={{ minHeight: 40 }} />
         <Box>{children}</Box>
+        <p>{user?.email}</p>
+        <button onClick={logout}>ログアウト</button>
       </Main>
     </Box>
   );

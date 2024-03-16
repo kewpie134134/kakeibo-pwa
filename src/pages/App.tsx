@@ -7,7 +7,8 @@ import Settings from "./Settings";
 import NotFound from "./NotFound";
 import ResponsiveDrawer from "../organisms/ResponsiveDrawer";
 import BottomNavigationBar from "../organisms/BottomNavigationBar";
-import Authentication from "../organisms/Authentication";
+import Register from "./Register";
+import Login from "./Login";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,10 @@ const App: React.FC = () => {
       <BrowserRouter>
         <ResponsiveDrawer>
           <Routes>
+            {/* 認証関連ページ */}
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            {/* 本ページ */}
             <Route path="/" element={<Input />} />
             <Route path="/input" element={<Input />} />
             <Route path="/note" element={<Note />} />
@@ -26,7 +31,6 @@ const App: React.FC = () => {
         </ResponsiveDrawer>
         <BottomNavigationBar />
       </BrowserRouter>
-      <Authentication />
     </div>
   );
 };
