@@ -1,27 +1,7 @@
-import { useEffect, useState } from "react";
 import { auth, googleProvider } from "../libs/firebaseConfig";
-import { User, signInWithPopup, signOut } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 
 const Authentication = () => {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        // ログインしている場合
-        setUser(authUser);
-      } else {
-        // ログアウトしている場合
-        setUser(null);
-      }
-    });
-
-    // アンマウント時に監視解除
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
   // ログイン
   const handleSignIn = async () => {
     try {
@@ -35,28 +15,10 @@ const Authentication = () => {
     }
   };
 
-  // ログアウト
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("ログアウトエラー: ", error);
-    }
-  };
-
   return (
     <>
-      {user ? (
-        <>
-          <p>ログインユーザー: {user.displayName}</p>
-          <button onClick={handleSignOut}>ログアウト</button>
-        </>
-      ) : (
-        <>
-          <p>ログインしていません</p>
-          <button onClick={handleSignIn}>ログイン(Google 認証)</button>
-        </>
-      )}
+      <div>Google 認証を使用する場合はこちら</div>
+      <button onClick={handleSignIn}>ログイン(Google 認証)</button>
     </>
   );
 };
