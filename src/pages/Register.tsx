@@ -36,7 +36,7 @@ const Register = () => {
     <>
       {/* ログインしていればトップページへ */}
       {user ? (
-        <Navigate to={`/`} />
+        <Navigate to={"/input/"} />
       ) : (
         <>
           <h1>新規登録</h1>

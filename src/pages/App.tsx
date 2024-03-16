@@ -17,15 +17,15 @@ const App: React.FC = () => {
         <ResponsiveDrawer>
           <Routes>
             {/* 認証関連ページ */}
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/register/" element={<Register />} />
+            <Route path="/login/" element={<Login />} />
             {/* 本ページ */}
             <Route path="/" element={<Input />} />
-            <Route path="/input" element={<Input />} />
-            <Route path="/note" element={<Note />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/graph" element={<Graph />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/input/" element={<Input />} />
+            <Route path="/note/" element={<Note />} />
+            <Route path="/calendar/" element={<Calendar />} />
+            <Route path="/graph/" element={<Graph />} />
+            <Route path="/settings/" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ResponsiveDrawer>

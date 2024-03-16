@@ -32,10 +32,9 @@ const Login = () => {
     <>
       {/* ログインしている場合、トップページへ遷移する */}
       {user ? (
-        <Navigate to={"/"} />
+        <Navigate to={"/input/"} />
       ) : (
         <>
-          {" "}
           <h1>ログインページ</h1>
           <form onSubmit={handleSubmit}>
             <div>
