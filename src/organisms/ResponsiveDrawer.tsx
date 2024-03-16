@@ -9,8 +9,12 @@ import {
 } from "@mui/material";
 import { createTheme, styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ResponsiveDrawerList from "../molecules/ResponsiveDrawerListItem";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../libs/firebaseConfig";
+import { useAuthUser } from "../stores/authUser";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const drawerWidth = 200;
 const headerNavigationHeight = 56;
@@ -82,6 +86,15 @@ type ResponsiveDrawerProps = {
 const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  // ローディング状態の State
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // zustand 状態を管理
+  const { user, setUser } = useAuthUser();
+
+  // ログアウト時の Navigate を設定
+  const navigate = useNavigate();
+
   const openCloseDrawerNav = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -89,46 +102,81 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
     setIsDrawerOpen(false);
   };
 
+  // ログインしているかどうかを判定する
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+  }, [setUser]);
+
+  // ログアウト時の処理
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login/");
+  };
+
+  // URL のパス名を把握
+  const pathname = useLocation().pathname;
+
   return (
-    <Box sx={styles.root}>
-      <CssBaseline />
-      {/* AppBar */}
-      <AppBar sx={styles.appBar}>
-        <Toolbar variant="dense">
-          <IconButton
-            onClick={openCloseDrawerNav}
-            color="inherit"
-            sx={{ mr: 2 }}
+    <>
+      {/* ローディングが false の時に画面を表示させる */}
+      {!loading && (
+        <Box sx={styles.root}>
+          <CssBaseline />
+          {/* AppBar */}
+          <AppBar sx={styles.appBar}>
+            <Toolbar variant="dense">
+              <IconButton
+                onClick={openCloseDrawerNav}
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                タイトル
+              </Typography>
+            </Toolbar>
+          </AppBar>
+
+          {/* Drawer */}
+          <Drawer
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": { width: drawerWidth },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={isDrawerOpen}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            タイトル
-          </Typography>
-        </Toolbar>
-      </AppBar>
+            <Toolbar variant="dense" sx={{ minHeight: 46 }} />
+            <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
+          </Drawer>
 
-      {/* Drawer */}
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": { width: drawerWidth },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={isDrawerOpen}
-      >
-        <Toolbar variant="dense" sx={{ minHeight: 46 }} />
-        <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
-      </Drawer>
+          {/* Main */}
+          <Main open={isDrawerOpen}>
+            <Toolbar variant="dense" sx={{ minHeight: 40 }} />
+            <Box>{children}</Box>
 
-      {/* Main */}
-      <Main open={isDrawerOpen}>
-        <Toolbar variant="dense" sx={{ minHeight: 40 }} />
-        <Box>{children}</Box>
-      </Main>
-    </Box>
+            {!user ? (
+              pathname === "/register/" ? (
+                <Navigate to={"/register/"} />
+              ) : (
+                <Navigate to={"/login/"} />
+              )
+            ) : (
+              <>
+                <p>{user?.email}</p>
+                <button onClick={logout}>ログアウト</button>
+              </>
+            )}
+          </Main>
+        </Box>
+      )}
+    </>
   );
 };
 
