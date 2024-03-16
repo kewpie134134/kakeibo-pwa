@@ -174,6 +174,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
               <Main open={isDrawerOpen}>
                 <Toolbar variant="dense" sx={{ minHeight: 40 }} />
                 <Box>{children}</Box>
+                <div>{user?.email}</div>
                 <button onClick={logout}>ログアウト</button>
               </Main>
             </Box>
