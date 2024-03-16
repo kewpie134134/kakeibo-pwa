@@ -1,5 +1,5 @@
-function Note() {
+const Note = () => {
   return <>ノートページ</>;
-}
+};
 
 export default Note;
