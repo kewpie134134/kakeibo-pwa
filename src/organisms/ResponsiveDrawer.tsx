@@ -122,60 +122,63 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   return (
     <>
       {/* ローディングが false の時に画面を表示させる */}
-      {!loading && (
-        <Box sx={styles.root}>
-          <CssBaseline />
-          {/* AppBar */}
-          <AppBar sx={styles.appBar}>
-            <Toolbar variant="dense">
-              <IconButton
-                onClick={openCloseDrawerNav}
-                color="inherit"
-                sx={{ mr: 2 }}
+      {!loading &&
+        (!user ? (
+          pathname === "/register/" ? (
+            <>
+              <Navigate to={"/register/"} />
+              <Box>{children}</Box>
+            </>
+          ) : (
+            <>
+              <Navigate to={"/login/"} />
+              <Box>{children}</Box>
+            </>
+          )
+        ) : (
+          <>
+            <Box sx={styles.root}>
+              <CssBaseline />
+              {/* AppBar */}
+              <AppBar sx={styles.appBar}>
+                <Toolbar variant="dense">
+                  <IconButton
+                    onClick={openCloseDrawerNav}
+                    color="inherit"
+                    sx={{ mr: 2 }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography variant="h6" noWrap>
+                    タイトル
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+
+              {/* Drawer */}
+              <Drawer
+                sx={{
+                  width: drawerWidth,
+                  flexShrink: 0,
+                  "& .MuiDrawer-paper": { width: drawerWidth },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={isDrawerOpen}
               >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap>
-                タイトル
-              </Typography>
-            </Toolbar>
-          </AppBar>
+                <Toolbar variant="dense" sx={{ minHeight: 46 }} />
+                <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
+              </Drawer>
 
-          {/* Drawer */}
-          <Drawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": { width: drawerWidth },
-            }}
-            variant="persistent"
-            anchor="left"
-            open={isDrawerOpen}
-          >
-            <Toolbar variant="dense" sx={{ minHeight: 46 }} />
-            <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
-          </Drawer>
-
-          {/* Main */}
-          <Main open={isDrawerOpen}>
-            <Toolbar variant="dense" sx={{ minHeight: 40 }} />
-            <Box>{children}</Box>
-
-            {!user ? (
-              pathname === "/register/" ? (
-                <Navigate to={"/register/"} />
-              ) : (
-                <Navigate to={"/login/"} />
-              )
-            ) : (
-              <>
-                <p>{user?.email}</p>
+              {/* Main */}
+              <Main open={isDrawerOpen}>
+                <Toolbar variant="dense" sx={{ minHeight: 40 }} />
+                <Box>{children}</Box>
                 <button onClick={logout}>ログアウト</button>
-              </>
-            )}
-          </Main>
-        </Box>
-      )}
+              </Main>
+            </Box>
+          </>
+        ))}
     </>
   );
 };
