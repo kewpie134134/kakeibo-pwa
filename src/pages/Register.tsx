@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth } from "../libs/firebaseConfig";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuthUser } from "../stores/authUser";
 
 const Register = () => {
@@ -60,6 +60,9 @@ const Register = () => {
               />
             </div>
             <button>登録する</button>
+            <p>
+              ログインは<Link to={"/login/"}>こちら</Link>
+            </p>
           </form>
         </>
       )}

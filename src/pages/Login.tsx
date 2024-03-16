@@ -2,7 +2,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth } from "../libs/firebaseConfig";
 import { useAuthUser } from "../stores/authUser";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -56,6 +56,9 @@ const Login = () => {
               />
             </div>
             <button>ログイン</button>
+            <p>
+              新規登録は<Link to={"/register/"}>こちら</Link>
+            </p>
           </form>
         </>
       )}

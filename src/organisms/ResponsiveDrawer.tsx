@@ -14,7 +14,7 @@ import ResponsiveDrawerList from "../molecules/ResponsiveDrawerListItem";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../libs/firebaseConfig";
 import { useAuthUser } from "../stores/authUser";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const drawerWidth = 200;
 const headerNavigationHeight = 56;
@@ -116,6 +116,9 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
     navigate("/login/");
   };
 
+  // URL のパス名を把握
+  const pathname = useLocation().pathname;
+
   return (
     <>
       {/* ローディングが false の時に画面を表示させる */}
@@ -159,7 +162,11 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
             <Box>{children}</Box>
 
             {!user ? (
-              <Navigate to={"/login/"} />
+              pathname === "/register/" ? (
+                <Navigate to={"/register/"} />
+              ) : (
+                <Navigate to={"/login/"} />
+              )
             ) : (
               <>
                 <p>{user?.email}</p>
