@@ -86,6 +86,9 @@ type ResponsiveDrawerProps = {
 const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  // ローディング状態の State
+  const [loading, setLoading] = useState<boolean>(true);
+
   // zustand 状態を管理
   const { user, setUser } = useAuthUser();
 
@@ -103,6 +106,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false);
     });
   }, [setUser]);
 
@@ -112,58 +116,59 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
     navigate("/login/");
   };
 
-  console.log(user);
-
   return (
     <>
-      <Box sx={styles.root}>
-        <CssBaseline />
-        {/* AppBar */}
-        <AppBar sx={styles.appBar}>
-          <Toolbar variant="dense">
-            <IconButton
-              onClick={openCloseDrawerNav}
-              color="inherit"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              タイトル
-            </Typography>
-          </Toolbar>
-        </AppBar>
+      {/* ローディングが false の時に画面を表示させる */}
+      {!loading && (
+        <Box sx={styles.root}>
+          <CssBaseline />
+          {/* AppBar */}
+          <AppBar sx={styles.appBar}>
+            <Toolbar variant="dense">
+              <IconButton
+                onClick={openCloseDrawerNav}
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                タイトル
+              </Typography>
+            </Toolbar>
+          </AppBar>
 
-        {/* Drawer */}
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": { width: drawerWidth },
-          }}
-          variant="persistent"
-          anchor="left"
-          open={isDrawerOpen}
-        >
-          <Toolbar variant="dense" sx={{ minHeight: 46 }} />
-          <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
-        </Drawer>
+          {/* Drawer */}
+          <Drawer
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": { width: drawerWidth },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={isDrawerOpen}
+          >
+            <Toolbar variant="dense" sx={{ minHeight: 46 }} />
+            <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
+          </Drawer>
 
-        {/* Main */}
-        <Main open={isDrawerOpen}>
-          <Toolbar variant="dense" sx={{ minHeight: 40 }} />
-          <Box>{children}</Box>
+          {/* Main */}
+          <Main open={isDrawerOpen}>
+            <Toolbar variant="dense" sx={{ minHeight: 40 }} />
+            <Box>{children}</Box>
 
-          {!user ? (
-            <Navigate to={"/login/"} />
-          ) : (
-            <>
-              <p>{user?.email}</p>
-              <button onClick={logout}>ログアウト</button>
-            </>
-          )}
-        </Main>
-      </Box>
+            {!user ? (
+              <Navigate to={"/login/"} />
+            ) : (
+              <>
+                <p>{user?.email}</p>
+                <button onClick={logout}>ログアウト</button>
+              </>
+            )}
+          </Main>
+        </Box>
+      )}
     </>
   );
 };
