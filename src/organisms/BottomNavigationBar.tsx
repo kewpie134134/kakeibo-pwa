@@ -46,35 +46,35 @@ const BottomNavigationBar: React.FC = () => {
       <BottomNavigation sx={styles.navAreaStyle} showLabels value={pageNumber}>
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          // label="入力"
+          label={<div style={{ fontSize: "x-small" }}>入力</div>}
           icon={<CreateIcon />}
           component={Link}
           to="/input"
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          // label="ノート"
+          label={<div style={{ fontSize: "x-small" }}>ノート</div>}
           icon={<ImportContactsIcon />}
           component={Link}
           to="/note"
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          // label="カレンダー"
+          label={<div style={{ fontSize: "x-small" }}>カレンダー</div>}
           icon={<CalendarMonthIcon />}
           component={Link}
           to="/calendar"
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          // label="グラフ"
+          label={<div style={{ fontSize: "x-small" }}>グラフ</div>}
           icon={<DonutSmallIcon />}
           component={Link}
           to="/graph"
         />
         <BottomNavigationAction
           sx={styles.navButtonStyle}
-          // label="設定"
+          label={<div style={{ fontSize: "x-small" }}>設定</div>}
           icon={<SettingsIcon />}
           component={Link}
           to="/settings"
