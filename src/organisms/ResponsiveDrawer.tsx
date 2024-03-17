@@ -15,6 +15,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../libs/firebaseConfig";
 import { useAuthUser } from "../stores/authUser";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import BottomNavigationBar from "./BottomNavigationBar";
 
 const drawerWidth = 200;
 const headerNavigationHeight = 56;
@@ -176,6 +177,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                 <Box>{children}</Box>
                 <div>{user?.email}</div>
                 <button onClick={logout}>ログアウト</button>
+                <BottomNavigationBar />
               </Main>
             </Box>
           </>
