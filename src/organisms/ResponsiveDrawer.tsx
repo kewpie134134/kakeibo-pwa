@@ -4,6 +4,7 @@ import {
   CssBaseline,
   Divider,
   Drawer,
+  Grid,
   IconButton,
   Link,
   Menu,
@@ -21,6 +22,7 @@ import { useAuthUser } from "../stores/authUser";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import BottomNavigationBar from "./BottomNavigationBar";
 import { AccountCircle } from "@mui/icons-material";
+import { useWindowResize } from "../hooks/useWindowResize";
 
 const drawerWidth = 200;
 const headerNavigationHeight = 56;
@@ -47,10 +49,9 @@ const styles = {
   appBarIcon: {
     [theme.breakpoints.down("sm")]: {
       // xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536
-      // 画面幅が sm 以上であれば表示させない
+      // 画面幅が sm 以下であれば表示させない
       display: "none",
     },
-    mr: 2,
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -103,7 +104,11 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   // ローディング状態の State
   const [loading, setLoading] = useState<boolean>(true);
 
+  // ナビゲーションバー右アイコンのプロフィールメニューに設定するアンカーの State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  // カスタムフックからウィンドウサイズを計測し、左メニューアイコンバーの表示非表示を判定する
+  const [isVisible] = useWindowResize();
 
   // zustand 状態を管理
   const { user, setUser } = useAuthUser();
@@ -134,6 +139,11 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
       setLoading(false);
     });
   }, [setUser]);
+
+  // 画面サイズが 600px 以下の場合、左メニューを閉じるようにする
+  useEffect(() => {
+    closeDrawerNav();
+  }, [isVisible]);
 
   // ログアウト時の処理
   const handleLogout = async () => {
@@ -168,56 +178,77 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
               {/* AppBar */}
               <AppBar sx={styles.appBar}>
                 <Toolbar variant="dense">
-                  <IconButton
-                    onClick={openCloseDrawerNav}
-                    color="inherit"
-                    sx={styles.appBarIcon}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
                   >
-                    <MenuIcon />
-                  </IconButton>
-                  <Link
-                    color="inherit"
-                    underline="none"
-                    variant="h6"
-                    noWrap
-                    href="#" // TODO: 要検討
-                    sx={{ flexGrow: 1, textAlign: "center" }}
-                  >
-                    家計簿アプリ
-                  </Link>
-                  <div>
-                    <IconButton
-                      size="large"
-                      aria-label="account of current user"
-                      aria-controls="menu-appbar"
-                      aria-haspopup="true"
-                      onClick={handleMenu}
-                      color="inherit"
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                    <Menu
-                      sx={{ mt: 4 }}
-                      id="menu-appbar"
-                      anchorEl={anchorEl}
-                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                      keepMounted
-                      transformOrigin={{ vertical: "top", horizontal: "right" }}
-                      open={Boolean(anchorEl)}
-                      onClose={handleMenuClose}
-                    >
+                    <Grid item xs={4} textAlign="start">
+                      <IconButton
+                        onClick={openCloseDrawerNav}
+                        color="inherit"
+                        sx={styles.appBarIcon}
+                      >
+                        <MenuIcon />
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs={4} textAlign="center">
+                      <Link
+                        color="inherit"
+                        underline="none"
+                        variant="h6"
+                        noWrap
+                        href="#" // TODO: 要検討
+                        sx={{ flexGrow: 1, textAlign: "center" }}
+                      >
+                        家計簿アプリ
+                      </Link>
+                    </Grid>
+                    <Grid item xs={4} textAlign="end">
                       <div>
-                        <Typography>メールアドレス</Typography>
-                        <Typography>{user.email}</Typography>
+                        <IconButton
+                          size="large"
+                          aria-label="account of current user"
+                          aria-controls="menu-appbar"
+                          aria-haspopup="true"
+                          onClick={handleMenu}
+                          color="inherit"
+                        >
+                          <AccountCircle />
+                        </IconButton>
+                        <Menu
+                          sx={{ mt: 4 }}
+                          id="menu-appbar"
+                          anchorEl={anchorEl}
+                          anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          open={Boolean(anchorEl)}
+                          onClose={handleMenuClose}
+                        >
+                          <div>
+                            <Typography>メールアドレス</Typography>
+                            <Typography>{user.email}</Typography>
+                          </div>
+                          <Divider />
+                          <MenuItem onClick={handleMenuClose}>
+                            プロフィール
+                          </MenuItem>
+                          <MenuItem onClick={handleMenuClose}>
+                            アカウント
+                          </MenuItem>
+                          <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+                        </Menu>
                       </div>
-                      <Divider />
-                      <MenuItem onClick={handleMenuClose}>
-                        プロフィール
-                      </MenuItem>
-                      <MenuItem onClick={handleMenuClose}>アカウント</MenuItem>
-                      <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
-                    </Menu>
-                  </div>
+                    </Grid>
+                  </Grid>
                 </Toolbar>
               </AppBar>
 
