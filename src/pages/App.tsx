@@ -6,7 +6,6 @@ import Graph from "./Graph";
 import Settings from "./Settings";
 import NotFound from "./NotFound";
 import ResponsiveDrawer from "../organisms/ResponsiveDrawer";
-import BottomNavigationBar from "../organisms/BottomNavigationBar";
 import Register from "./Register";
 import Login from "./Login";
 
@@ -29,7 +28,6 @@ const App: React.FC = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ResponsiveDrawer>
-        <BottomNavigationBar />
       </BrowserRouter>
     </div>
   );
