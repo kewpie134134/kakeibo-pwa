@@ -2,8 +2,10 @@ import {
   AppBar,
   Box,
   CssBaseline,
+  Divider,
   Drawer,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Toolbar,
@@ -127,6 +129,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
 
   // ログアウト時の処理
   const handleLogout = async () => {
+    setAnchorEl(null);
     await signOut(auth);
     navigate("/login/");
   };
@@ -164,13 +167,16 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                   >
                     <MenuIcon />
                   </IconButton>
-                  <Typography
+                  <Link
+                    color="inherit"
+                    underline="none"
                     variant="h6"
                     noWrap
+                    href="#" // TODO: 要検討
                     sx={{ flexGrow: 1, textAlign: "center" }}
                   >
                     家計簿アプリ
-                  </Typography>
+                  </Link>
                   <div>
                     <IconButton
                       size="large"
@@ -192,10 +198,16 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
                     >
+                      <div>
+                        <Typography>メールアドレス</Typography>
+                        <Typography>{user.email}</Typography>
+                      </div>
+                      <Divider />
                       <MenuItem onClick={handleMenuClose}>
                         プロフィール
                       </MenuItem>
                       <MenuItem onClick={handleMenuClose}>アカウント</MenuItem>
+                      <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
                     </Menu>
                   </div>
                 </Toolbar>
@@ -220,8 +232,6 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
               <Main open={isDrawerOpen}>
                 <Toolbar variant="dense" sx={{ minHeight: 40 }} />
                 <Box>{children}</Box>
-                <div>{user?.email}</div>
-                <button onClick={handleLogout}>ログアウト</button>
                 <BottomNavigationBar />
               </Main>
             </Box>
