@@ -4,18 +4,21 @@ import {
   CssBaseline,
   Drawer,
   IconButton,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { createTheme, styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ReactNode, useEffect, useState } from "react";
+import { MouseEvent, ReactNode, useEffect, useState } from "react";
 import ResponsiveDrawerList from "../molecules/ResponsiveDrawerListItem";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../libs/firebaseConfig";
 import { useAuthUser } from "../stores/authUser";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import BottomNavigationBar from "./BottomNavigationBar";
+import { AccountCircle } from "@mui/icons-material";
 
 const drawerWidth = 200;
 const headerNavigationHeight = 56;
@@ -90,6 +93,8 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   // ローディング状態の State
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   // zustand 状態を管理
   const { user, setUser } = useAuthUser();
 
@@ -103,6 +108,15 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
     setIsDrawerOpen(false);
   };
 
+  // アップバーの右サイドアカウントメニューアイコン操作
+  const handleMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   // ログインしているかどうかを判定する
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -112,7 +126,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   }, [setUser]);
 
   // ログアウト時の処理
-  const logout = async () => {
+  const handleLogout = async () => {
     await signOut(auth);
     navigate("/login/");
   };
@@ -150,9 +164,40 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                   >
                     <MenuIcon />
                   </IconButton>
-                  <Typography variant="h6" noWrap>
-                    タイトル
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    sx={{ flexGrow: 1, textAlign: "center" }}
+                  >
+                    家計簿アプリ
                   </Typography>
+                  <div>
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <Menu
+                      sx={{ mt: 4 }}
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                      keepMounted
+                      transformOrigin={{ vertical: "top", horizontal: "right" }}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                    >
+                      <MenuItem onClick={handleMenuClose}>
+                        プロフィール
+                      </MenuItem>
+                      <MenuItem onClick={handleMenuClose}>アカウント</MenuItem>
+                    </Menu>
+                  </div>
                 </Toolbar>
               </AppBar>
 
@@ -176,7 +221,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                 <Toolbar variant="dense" sx={{ minHeight: 40 }} />
                 <Box>{children}</Box>
                 <div>{user?.email}</div>
-                <button onClick={logout}>ログアウト</button>
+                <button onClick={handleLogout}>ログアウト</button>
                 <BottomNavigationBar />
               </Main>
             </Box>
