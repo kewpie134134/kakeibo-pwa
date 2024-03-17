@@ -10,6 +10,8 @@ import {
   TextField,
 } from "@mui/material";
 import { format } from "date-fns";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../libs/firebaseConfig";
 
 const categories = [
   "食費",
@@ -29,21 +31,77 @@ const Input = () => {
     setInputPage();
   }, [setInputPage]);
 
+  // 本日の日付
   const today = format(new Date(), "yyyy-MM-dd");
 
+  // 入力フォームの内容格納 State
+  const [date, setDate] = useState<string>(today);
+  const [amount, setAmount] = useState<string>("");
   const [category, setCaterogy] = useState<string>("");
+  const [memo, setMemo] = useState<string>("");
 
-  const handleChange = (e: SelectChangeEvent) => {
+  // 日付情報変更時の処理
+  const handleDateChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setDate(e.target.value as string);
+  };
+
+  // 金額情報変更時の処理
+  const handleAmountChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setAmount(e.target.value as string);
+  };
+
+  // カテゴリー情報変更時の処理
+  const handleCategoryChange = (e: SelectChangeEvent) => {
     setCaterogy(e.target.value as string);
   };
 
+  // メモ情報変更時の処理
+  const handleMemoChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setMemo(e.target.value as string);
+  };
+
+  // 追加ボタン選択時の処理
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // FireStore への連携情報準備
+    const accountBookCollectionRef = collection(
+      db,
+      "accountBook",
+      "2024",
+      "03"
+    );
+
+    // FireStore へ情報連携
+    const documentRef = await addDoc(accountBookCollectionRef, {
+      date,
+      amount,
+      category,
+      memo,
+    });
+    console.log(documentRef);
+  };
+
+  // // FireStore からデータを取得
+  // const accountBook = collection(db, "accountBook", "2024", "03");
+  // getDocs(accountBook).then((snapshot) => {
+  //   snapshot.docs.forEach((doc) => console.log(doc.data()));
+  // });
+
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <TextField
         fullWidth
         defaultValue={today}
         label="日付"
         type="date"
+        onChange={handleDateChange}
         // margin="normal"
       ></TextField>
       <TextField
@@ -60,11 +118,16 @@ const Input = () => {
             { passive: false }
           )
         }
+        onChange={handleAmountChange}
         margin="normal"
       ></TextField>
       <FormControl fullWidth margin="normal">
         <InputLabel>カテゴリー</InputLabel>
-        <Select value={category} label="カテゴリー" onChange={handleChange}>
+        <Select
+          value={category}
+          label="カテゴリー"
+          onChange={handleCategoryChange}
+        >
           {categories.map((categoryName: string, index: number) => (
             <MenuItem value={categoryName} key={index}>
               {categoryName}
@@ -72,11 +135,22 @@ const Input = () => {
           ))}
         </Select>
       </FormControl>
-      <TextField label="メモ" fullWidth margin="normal" />
-      <Button fullWidth variant="contained" size="large" sx={{ my: 2 }}>
+      <TextField
+        label="メモ"
+        fullWidth
+        onChange={handleMemoChange}
+        margin="normal"
+      />
+      <Button
+        fullWidth
+        type="submit"
+        variant="contained"
+        size="large"
+        sx={{ my: 2 }}
+      >
         追加
       </Button>
-    </>
+    </form>
   );
 };
 
