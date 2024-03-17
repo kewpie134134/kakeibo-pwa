@@ -44,6 +44,14 @@ const styles = {
     },
     zIndex: () => theme.zIndex.drawer + 1,
   },
+  appBarIcon: {
+    [theme.breakpoints.down("sm")]: {
+      // xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536
+      // 画面幅が sm 以上であれば表示させない
+      display: "none",
+    },
+    mr: 2,
+  },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
@@ -163,7 +171,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                   <IconButton
                     onClick={openCloseDrawerNav}
                     color="inherit"
-                    sx={{ mr: 2 }}
+                    sx={styles.appBarIcon}
                   >
                     <MenuIcon />
                   </IconButton>
