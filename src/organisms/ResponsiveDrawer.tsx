@@ -270,7 +270,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
 
               {/* Main */}
               <Main open={isDrawerOpen}>
-                <Toolbar variant="dense" sx={{ minHeight: 40 }} />
+                <Toolbar variant="dense" sx={{ minHeight: 32 }} />
                 <Box>{children}</Box>
                 <BottomNavigationBar />
               </Main>
