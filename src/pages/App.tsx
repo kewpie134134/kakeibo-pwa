@@ -1,3 +1,4 @@
+import "../styles/global.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Input from "./Input";
 import Note from "./Note";
