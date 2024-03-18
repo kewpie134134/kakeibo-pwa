@@ -90,12 +90,6 @@ const Input = () => {
     });
   };
 
-  // // FireStore からデータを取得
-  // const accountBook = collection(db, "accountBook", "2024", "03");
-  // getDocs(accountBook).then((snapshot) => {
-  //   snapshot.docs.forEach((doc) => console.log(doc.data()));
-  // });
-
   return (
     <form onSubmit={handleSubmit}>
       <TextField
