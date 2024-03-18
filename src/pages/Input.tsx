@@ -70,22 +70,24 @@ const Input = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 日付情報をハイフンで分割
+    const dateArray = date.split("-");
+
     // FireStore への連携情報準備
     const accountBookCollectionRef = collection(
       db,
       "accountBook",
-      "2024",
-      "03"
+      dateArray[0], // 日付の年
+      dateArray[1] // 日付の月
     );
 
     // FireStore へ情報連携
-    const documentRef = await addDoc(accountBookCollectionRef, {
+    await addDoc(accountBookCollectionRef, {
       date,
       amount,
       category,
       memo,
     });
-    console.log(documentRef);
   };
 
   // // FireStore からデータを取得
