@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Web アプリの Firebase 構成
 const firebaseConfig = {
@@ -22,4 +23,7 @@ const auth = getAuth(app);
 // Google 認証プロバイダの準備
 const googleProvider = new GoogleAuthProvider();
 
-export { auth, googleProvider };
+// FireStore の準備
+const db = getFirestore(app);
+
+export { auth, googleProvider, db };

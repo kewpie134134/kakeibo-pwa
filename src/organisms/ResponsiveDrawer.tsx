@@ -119,9 +119,6 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   const openCloseDrawerNav = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-  const closeDrawerNav = () => {
-    setIsDrawerOpen(false);
-  };
 
   // アップバーの右サイドアカウントメニューアイコン操作
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -140,9 +137,13 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
     });
   }, [setUser]);
 
-  // 画面サイズが 600px 以下の場合、左メニューを閉じるようにする
+  // 画面サイズが 600px 以上の場合左メニューを開き、599px 以下の場合は左メニューを閉じる
   useEffect(() => {
-    closeDrawerNav();
+    if (isVisible) {
+      setIsDrawerOpen(true);
+    } else {
+      setIsDrawerOpen(false);
+    }
   }, [isVisible]);
 
   // ログアウト時の処理
@@ -264,12 +265,12 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
                 open={isDrawerOpen}
               >
                 <Toolbar variant="dense" sx={{ minHeight: 46 }} />
-                <ResponsiveDrawerList closeDrawerNav={closeDrawerNav} />
+                <ResponsiveDrawerList />
               </Drawer>
 
               {/* Main */}
               <Main open={isDrawerOpen}>
-                <Toolbar variant="dense" sx={{ minHeight: 40 }} />
+                <Toolbar variant="dense" sx={{ minHeight: 32 }} />
                 <Box>{children}</Box>
                 <BottomNavigationBar />
               </Main>

@@ -7,7 +7,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ResponsiveDrawerListItem from "../atoms/ResponsiveDrawerListItem";
 
 type ResponsiveDrawerList = {
-  closeDrawerNav: () => void;
+  closeDrawerNav?: () => void;
 };
 
 const ResponsiveDrawerList = ({ closeDrawerNav }: ResponsiveDrawerList) => {

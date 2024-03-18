@@ -4,7 +4,7 @@ import { usePageNumberStore } from "../stores/pageNumber";
 
 type ResponsiveDrawerListItemProps = {
   to: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon: JSX.Element;
   text: string;
   sortOrder: number;
