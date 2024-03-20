@@ -12,6 +12,8 @@ import {
 import { format } from "date-fns";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../libs/firebaseConfig";
+import { useAuthUser } from "../stores/authUser";
+import * as DB from "../consts/firestore";
 
 const categories = [
   "食費",
@@ -30,6 +32,9 @@ const Input = () => {
   useEffect(() => {
     setInputPage();
   }, [setInputPage]);
+
+  // zustand でユーザー状態を管理
+  const { user } = useAuthUser();
 
   // 本日の日付
   const today = format(new Date(), "yyyy-MM-dd");
@@ -76,9 +81,15 @@ const Input = () => {
     // FireStore への連携情報準備
     const accountBookCollectionRef = collection(
       db,
-      "accountBook",
+      DB.USERS_COLLECTION,
+      user!.email!, // 画面表示時はログイン情報は取得できている TODO: ユーザー情報の取得
+      DB.TABLES_COLLECTION,
+      DB.ACCOUNT_BOOK_COLLECTION,
+      DB.YEARS_COLLECTION,
       dateArray[0], // 日付の年
-      dateArray[1] // 日付の月
+      DB.MONTHS_COLLECTION,
+      dateArray[1], // 日付の月
+      DB.ITEMS_COLLECTION
     );
 
     // FireStore へ情報連携

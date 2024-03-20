@@ -110,7 +110,7 @@ const ResponsiveDrawer = ({ children }: ResponsiveDrawerProps) => {
   // カスタムフックからウィンドウサイズを計測し、左メニューアイコンバーの表示非表示を判定する
   const [isVisible] = useWindowResize();
 
-  // zustand 状態を管理
+  // zustand ユーザー状態を管理
   const { user, setUser } = useAuthUser();
 
   // ログアウト時の Navigate を設定
