@@ -7,10 +7,7 @@ const EnhancedTableToolbar = () => {
     <Toolbar>
       <Box
         sx={{
-          position: "fixed",
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
+          flex: "1 1 100%",
         }}
         id="tableTitle"
         component="div"
@@ -38,8 +35,7 @@ const EnhancedTableToolbar = () => {
           </IconButton>
         </Tooltip>
       </Box>
-
-      <Tooltip title="検索" sx={{ position: "absolute", right: 24 }}>
+      <Tooltip title="検索">
         <IconButton>
           <SearchIcon />
         </IconButton>
