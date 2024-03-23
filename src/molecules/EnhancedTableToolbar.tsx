@@ -1,13 +1,17 @@
-import { IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Toolbar, Tooltip, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 
 const EnhancedTableToolbar = () => {
   return (
     <Toolbar>
-      <Typography
-        sx={{ position: "fixed", left: "50%", transform: "translateX(-50%)" }}
-        variant="h6"
+      <Box
+        sx={{
+          position: "fixed",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+        }}
         id="tableTitle"
         component="div"
       >
@@ -19,13 +23,21 @@ const EnhancedTableToolbar = () => {
             />
           </IconButton>
         </Tooltip>
-        YYYY年MM月
+        <Button
+          size="large"
+          color="inherit"
+          onClick={() => {
+            console.log("AAAA");
+          }}
+        >
+          YYYY年MM月
+        </Button>
         <Tooltip title="来月">
           <IconButton onClick={() => {}}>
             <PlayArrowOutlinedIcon fontSize="large" />
           </IconButton>
         </Tooltip>
-      </Typography>
+      </Box>
 
       <Tooltip title="検索" sx={{ position: "absolute", right: 24 }}>
         <IconButton>
