@@ -1,8 +1,16 @@
-import { Box, IconButton, Toolbar, Tooltip, Button } from "@mui/material";
+import { Box, IconButton, Toolbar, Tooltip } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { ja } from "date-fns/locale/ja";
+import { useState } from "react";
 
 const EnhancedTableToolbar = () => {
+  const [date, setDate] = useState(new Date());
+
   return (
     <Toolbar>
       <Box
@@ -11,6 +19,7 @@ const EnhancedTableToolbar = () => {
         }}
         id="tableTitle"
         component="div"
+        display="flex"
       >
         <Tooltip title="先月">
           <IconButton onClick={() => {}}>
@@ -20,15 +29,16 @@ const EnhancedTableToolbar = () => {
             />
           </IconButton>
         </Tooltip>
-        <Button
-          size="large"
-          color="inherit"
-          onClick={() => {
-            console.log("AAAA");
-          }}
-        >
-          YYYY年MM月
-        </Button>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
+          <DemoContainer components={["DatePicker"]}>
+            <DatePicker
+              views={["month", "year"]}
+              defaultValue={date}
+              // slotProps={{ textField: { variant: "standard" } }}
+              onError={() => {}}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
         <Tooltip title="来月">
           <IconButton onClick={() => {}}>
             <PlayArrowOutlinedIcon fontSize="large" />
