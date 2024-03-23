@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePageNumberStore } from "../stores/pageNumber";
 import {
+  Box,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
 } from "@mui/material";
 import { DocumentData, collection, getDocs } from "firebase/firestore";
 import { db } from "../libs/firebaseConfig";
 import { useAuthUser } from "../stores/authUser";
 import * as DB from "../consts/firestore";
+import EnhancedTableToolbar from "../molecules/EnhancedTableToolbar";
+import EnhancedTableHead from "../molecules/EnhancedTableHead";
+import { Order, getComparator } from "../utils/enhancedTableSort";
 
 const Note = () => {
   // zustand でページ状態を設定
@@ -26,6 +29,10 @@ const Note = () => {
 
   // 家計簿データを保持する State
   const [accountBookData, setAccountBookData] = useState<DocumentData[]>([]);
+
+  // テーブルのソート情報を保持する State
+  const [order, setOrder] = useState<Order>("asc");
+  const [orderBy, setOrderBy] = useState<string>("date");
 
   // 家計簿データを取得
   useEffect(() => {
@@ -45,37 +52,75 @@ const Note = () => {
     );
     getDocs(accountBook).then((snapshot) => {
       setAccountBookData(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+          amount: Number(doc.data().amount),
+        }))
       );
     });
   }, [user]);
 
+  // ソート実施時の情報連携用関数
+  const handleRequestSort = (
+    _: React.MouseEvent<unknown>,
+    property: string
+  ) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  // テーブルの行選択時
+  const handleClick = (_: React.MouseEvent<unknown>, id: string) => {
+    // docId
+    console.log(id);
+  };
+
+  // テーブル表示データのメモ
+  const visibleRows = useMemo(
+    () => accountBookData.slice().sort(getComparator(order, orderBy)),
+    [order, orderBy, accountBookData]
+  );
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 300 }} aria-label="table">
-        <TableHead>
-          <TableRow>
-            <TableCell>日付</TableCell>
-            <TableCell>カテゴリー</TableCell>
-            <TableCell>メモ</TableCell>
-            <TableCell>金額</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {accountBookData.map((data) => (
-            <TableRow
-              key={data.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell>{data.date}</TableCell>
-              <TableCell>{data.category}</TableCell>
-              <TableCell>{data.memo}</TableCell>
-              <TableCell>{data.amount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
+        <EnhancedTableToolbar />
+        <TableContainer>
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {visibleRows.map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
+
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.id)}
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.id}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TableCell component="th" id={labelId} scope="row">
+                      {row.date}
+                    </TableCell>
+                    <TableCell>{row.category}</TableCell>
+                    <TableCell>{row.memo}</TableCell>
+                    <TableCell align="right">{row.amount}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Box>
   );
 };
 
