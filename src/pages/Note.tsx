@@ -34,8 +34,15 @@ const Note = () => {
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<string>("date");
 
+  // 今日の日付を保持する State
+  const [date, setDate] = useState<Date>(new Date());
+
   // 家計簿データを取得
   useEffect(() => {
+    // Date 型の文字列化
+    const yearStr = date.getFullYear().toString();
+    const monthStr = (date.getMonth() + 1).toString().padStart(2, "0");
+
     const accountBook = collection(
       db,
       DB.USERS_COLLECTION,
@@ -44,10 +51,10 @@ const Note = () => {
       DB.ACCOUNT_BOOK_COLLECTION,
       DB.YEARS_COLLECTION,
       // dateArray[0], // 日付の年
-      "2024", // 日付の年
+      yearStr, // 日付の年
       DB.MONTHS_COLLECTION,
       // dateArray[1], // 日付の月
-      "03", // 日付の月
+      monthStr, // 日付の月
       DB.ITEMS_COLLECTION
     );
     getDocs(accountBook).then((snapshot) => {
@@ -59,7 +66,7 @@ const Note = () => {
         }))
       );
     });
-  }, [user]);
+  }, [user, date]);
 
   // ソート実施時の情報連携用関数
   const handleRequestSort = (
@@ -86,7 +93,7 @@ const Note = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar date={date} setDate={setDate} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
