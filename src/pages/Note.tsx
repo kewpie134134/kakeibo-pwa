@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { DocumentData, collection, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { db } from "../libs/firebaseConfig";
 import { useAuthUser } from "../stores/authUser";
 import * as DB from "../consts/firestore";
@@ -36,6 +37,9 @@ const Note = () => {
 
   // 今日の日付を保持する State
   const [date, setDate] = useState<Date>(new Date());
+
+  // テーブルの行選択時用のフックを用意
+  const navigate = useNavigate();
 
   // 家計簿データを取得
   useEffect(() => {
@@ -82,6 +86,8 @@ const Note = () => {
   const handleClick = (_: React.MouseEvent<unknown>, id: string) => {
     // docId
     console.log(id);
+    // 選択した行の id を取得して、詳細画面に遷移
+    navigate(`/note/${id}`);
   };
 
   // テーブル表示データのメモ

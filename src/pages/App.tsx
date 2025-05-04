@@ -2,6 +2,7 @@ import "../styles/global.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Input from "./Input";
 import Note from "./Note";
+import NoteDetail from "./NoteDetail";
 import Calendar from "./Calendar";
 import Graph from "./Graph";
 import Settings from "./Settings";
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Input />} />
             <Route path="/input/" element={<Input />} />
             <Route path="/note/" element={<Note />} />
+            <Route path="/note/:id" element={<NoteDetail />} />
             <Route path="/calendar/" element={<Calendar />} />
             <Route path="/graph/" element={<Graph />} />
             <Route path="/settings/" element={<Settings />} />
