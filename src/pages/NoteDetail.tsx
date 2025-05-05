@@ -7,6 +7,7 @@ import { Box, Typography } from "@mui/material";
 import { useAuthUser } from "../stores/authUser";
 
 const NoteDetail = () => {
+  const { date } = useParams<{ date: string }>(); // URL パラメータから date を取得
   const { id } = useParams<{ id: string }>(); // URL パラメータから id を取得
   const [noteData, setNoteData] = useState<DocumentData | null>(null); // Firestore から取得したデータを保持する State
 
@@ -15,7 +16,10 @@ const NoteDetail = () => {
 
   useEffect(() => {
     const fetchNoteData = async () => {
-      if (!id) return;
+      if (!id || !date) return;
+
+      // date を年と月に分割
+      const [year, month] = date.split("-");
 
       // Firestore からデータを取得
       const docRef = doc(
@@ -25,9 +29,9 @@ const NoteDetail = () => {
         DB.TABLES_COLLECTION,
         DB.ACCOUNT_BOOK_COLLECTION,
         DB.YEARS_COLLECTION,
-        "2024", // TODO: 必要に応じて動的に変更
+        year, // 動的に取得した年を使用
         DB.MONTHS_COLLECTION,
-        "07", // TODO: 必要に応じて動的に変更
+        month, // 動的に取得した月を使用
         DB.ITEMS_COLLECTION,
         id
       );
@@ -41,7 +45,7 @@ const NoteDetail = () => {
     };
 
     fetchNoteData();
-  }, [id, user]);
+  }, [id, date, user]);
 
   if (!noteData) {
     return <Typography>Loading...</Typography>;

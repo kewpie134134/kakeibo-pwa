@@ -84,10 +84,8 @@ const Note = () => {
 
   // テーブルの行選択時
   const handleClick = (_: React.MouseEvent<unknown>, id: string) => {
-    // docId
-    console.log(id);
     // 選択した行の id を取得して、詳細画面に遷移
-    navigate(`/note/${id}`);
+    navigate(`/note/${date?.toISOString().split("T")[0]}/${id}`);
   };
 
   // テーブル表示データのメモ

@@ -24,7 +24,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Input />} />
             <Route path="/input/" element={<Input />} />
             <Route path="/note/" element={<Note />} />
-            <Route path="/note/:id" element={<NoteDetail />} />
+            <Route path="/note/:date/:id" element={<NoteDetail />} />
             <Route path="/calendar/" element={<Calendar />} />
             <Route path="/graph/" element={<Graph />} />
             <Route path="/settings/" element={<Settings />} />
