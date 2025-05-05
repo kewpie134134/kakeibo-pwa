@@ -7,17 +7,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ja } from "date-fns/locale/ja";
 import { addMonths } from "date-fns";
-import { useEffect, useState } from "react";
 
 type EnhancedTableToolbarType = {
   date: Date;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  setDate: (date: Date) => void;
 };
 
 const EnhancedTableToolbar = ({ date, setDate }: EnhancedTableToolbarType) => {
-  // DatePicker 用の日付 State
-  const [altDate, setAltDate] = useState<Date | null>(new Date());
-
   // 翌月に切り替えるボタン
   const addOneMonthHandler = () => {
     setDate(addMonths(date, 1));
@@ -27,16 +23,6 @@ const EnhancedTableToolbar = ({ date, setDate }: EnhancedTableToolbarType) => {
   const subOneMonthHandler = () => {
     setDate(addMonths(date, -1));
   };
-
-  // DatePicker で切り替えた場合、元の日付を変更する
-  useEffect(() => {
-    // altDate が null だったら今日の日付を入れる
-    if (!altDate) {
-      setDate(new Date());
-    } else {
-      setDate(altDate);
-    }
-  }, [altDate, setDate]);
 
   return (
     <Toolbar>
@@ -63,7 +49,9 @@ const EnhancedTableToolbar = ({ date, setDate }: EnhancedTableToolbarType) => {
               defaultValue={date}
               // slotProps={{ textField: { variant: "standard" } }}
               onError={() => {}}
-              onChange={(newValue) => setAltDate(newValue)}
+              onChange={(newValue) => {
+                newValue ? setDate(newValue) : null;
+              }}
               value={date}
             />
           </DemoContainer>

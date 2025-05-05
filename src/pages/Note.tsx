@@ -17,6 +17,7 @@ import * as DB from "../consts/firestore";
 import EnhancedTableToolbar from "../molecules/EnhancedTableToolbar";
 import EnhancedTableHead from "../molecules/EnhancedTableHead";
 import { Order, getComparator } from "../utils/enhancedTableSort";
+import { useDateStore } from "../stores/dateStore"; // Zustand ストアをインポート
 
 const Note = () => {
   // zustand でページ状態を設定
@@ -35,14 +36,15 @@ const Note = () => {
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<string>("date");
 
-  // 今日の日付を保持する State
-  const [date, setDate] = useState<Date>(new Date());
+  // Zustand で日付を管理
+  const { date, setDate } = useDateStore();
 
   // テーブルの行選択時用のフックを用意
   const navigate = useNavigate();
 
   // 家計簿データを取得
   useEffect(() => {
+    if (!user) return; // ユーザー情報と日付がない場合は処理を中断
     // Date 型の文字列化
     const yearStr = date.getFullYear().toString();
     const monthStr = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -50,14 +52,12 @@ const Note = () => {
     const accountBook = collection(
       db,
       DB.USERS_COLLECTION,
-      user!.email!, // 画面表示時はログイン情報は取得できている TODO: ユーザー情報の取得
+      user.email!, // 画面表示時はログイン情報は取得できている TODO: ユーザー情報の取得
       DB.TABLES_COLLECTION,
       DB.ACCOUNT_BOOK_COLLECTION,
       DB.YEARS_COLLECTION,
-      // dateArray[0], // 日付の年
       yearStr, // 日付の年
       DB.MONTHS_COLLECTION,
-      // dateArray[1], // 日付の月
       monthStr, // 日付の月
       DB.ITEMS_COLLECTION
     );

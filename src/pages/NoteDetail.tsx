@@ -4,10 +4,12 @@ import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "../libs/firebaseConfig";
 import * as DB from "../consts/firestore";
 import { Box, Typography } from "@mui/material";
+import { format } from "date-fns";
 import { useAuthUser } from "../stores/authUser";
+import { useDateStore } from "../stores/dateStore"; // Zustand ストアをインポート
 
 const NoteDetail = () => {
-  const { date } = useParams<{ date: string }>(); // URL パラメータから date を取得
+  const { date } = useDateStore(); // Zustand から日付を取得
   const { id } = useParams<{ id: string }>(); // URL パラメータから id を取得
   const [noteData, setNoteData] = useState<DocumentData | null>(null); // Firestore から取得したデータを保持する State
 
@@ -16,11 +18,13 @@ const NoteDetail = () => {
 
   useEffect(() => {
     const fetchNoteData = async () => {
-      if (!id || !date) return;
+      if (!id) return;
 
       // date を年と月に分割
-      const [year, month] = date.split("-");
+      const formatedDate = date ? format(date, "yyyy-MM-dd") : "";
+      const [year, month] = formatedDate.split("-");
 
+      if (!year || !month) return;
       // Firestore からデータを取得
       const docRef = doc(
         db,
